@@ -1,0 +1,49 @@
+NetworkStats summaryStats = null;
+                long summaryRx = 0;
+                long summaryTx = 0;
+                NetworkStats.Bucket summaryBucket = new NetworkStats.Bucket();
+                long summaryTotal = 0;
+
+                try {
+                    summaryStats = networkStatsManager.querySummary(ConnectivityManager.TYPE_MOBILE, "", 0, System.currentTimeMillis());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+                do {
+                    summaryStats.getNextBucket(summaryBucket);
+                    int summaryUid = summaryBucket.getUid();
+                    if (uid == summaryUid) {
+                        summaryRx += summaryBucket.getRxBytes();
+                        summaryTx += summaryBucket.getTxBytes();
+                    }
+                    Log.i(MainActivity.class.getSimpleName(), "uid:" + summaryBucket.getUid() + " rx:" + summaryBucket.getRxBytes() +
+                            " tx:" + summaryBucket.getTxBytes());
+                    summaryTotal += summaryBucket.getRxBytes() + summaryBucket.getTxBytes();
+                } while (summaryStats.hasNextBucket());
+
+
+                //-----------------------------------------------------------
+                NetworkStats summaryStats = null;
+                                long summaryRx = 0;
+                                long summaryTx = 0;
+                                NetworkStats.Bucket summaryBucket = new NetworkStats.Bucket();
+                                long summaryTotal = 0;
+
+                                try {
+                                    summaryStats = networkStatsManager.querySummary(ConnectivityManager.TYPE_WIFI, "", 0, System.currentTimeMillis());
+                                } catch (RemoteException e) {
+                                    e.printStackTrace();
+                                }
+                                do {
+                                    summaryStats.getNextBucket(summaryBucket);
+                                    int summaryUid = summaryBucket.getUid();
+                                    if (uid == summaryUid) {
+                                        summaryRx += summaryBucket.getRxBytes();
+                                        summaryTx += summaryBucket.getTxBytes();
+                                    }
+                                    Log.i(MainActivity.class.getSimpleName(), "uid:" + summaryBucket.getUid() + " rx:" +
+                                            formate(summaryBucket.getRxBytes()) +
+                                            " tx:" + formate(summaryBucket.getTxBytes()));
+                                    summaryTotal += summaryBucket.getRxBytes() + summaryBucket.getTxBytes();
+                                    Log.i(TAG, "getuid: sumaarytotal"+formate(summaryTotal));
+                                } while (summaryStats.hasNextBucket());
